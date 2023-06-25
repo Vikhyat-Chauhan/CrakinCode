@@ -1,0 +1,25 @@
+class Solution:
+    def right1PShifter(self, nums: list[int]):
+            for i in range(len(nums)-1,0,-1):
+                nums[i]=nums[i-1]
+            return numss
+
+    def rotate(self, nums: list[int], k: int) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        """for i in range(k):
+            backup = nums[len(nums)-1]
+            nums = self.right1PShifter(nums)
+            nums[0] = backup
+        print(nums)"""
+        temp=[]
+        k=k%len(nums)
+        temp=nums[-k:]
+        nums[k:]=nums[:-k]
+        nums[:k]=temp
+        print(nums)
+        
+        
+sol = Solution()
+sol.rotate([1,2,3,4,5,6,7],3)
