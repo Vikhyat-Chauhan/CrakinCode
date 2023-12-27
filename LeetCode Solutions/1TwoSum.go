@@ -1,5 +1,5 @@
 /*
- * https://www.youtube.com/watch?v=Yan0cv2cLy8&t=1s&ab_channel=NeetCode
+ *
  */
 package main
 
@@ -10,6 +10,7 @@ var target = 26
 
 func main() {
 	fmt.Println(bruteForce())
+	fmt.Println(hashMapBased())
 }
 
 // Time O(n^2)
@@ -25,13 +26,17 @@ func bruteForce() (result []int) {
 	return result
 }
 
+// Time O(n)
 func hashMapBased() (result []int) {
+	seenit := make(map[int]int)
 	for i := 0; i < len(nums); i++ {
-		for j := i; j < len(nums); j++ {
-			if (nums[i] + nums[j]) == target {
-				result = append(result, i)
-				result = append(result, j)
-			}
+		required := target - nums[i]
+		if index, present := seenit[required]; present {
+			result = append(result, index)
+			result = append(result, i)
+			return result
+		} else {
+			seenit[nums[i]] = i
 		}
 	}
 	return result
