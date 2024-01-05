@@ -7,32 +7,37 @@ import (
 	"fmt"
 )
 
-var str = string("dvdf")
+var str = string("abcabcbb")
 
 func main() {
 	fmt.Println(bruteForce(str))
 }
 
-// Time O(n^2)
+// Time O(n^3)
 func bruteForce(s string) (result int) {
 	substr := ""
-	//result := 0 //for leetcode
 	for i := 0; i < len(s); i++ {
-		found := false
-		for j := 0; j < len(substr); j++ {
-			if s[j] == s[i] {
-				found = true
+		substr = fmt.Sprint(string(s[i]))
+		for j := i + 1; j < len(s); j++ {
+			repeated := false
+			if s[i] == s[j] {
+				repeated = true
 			}
-		}
-		if found {
-			i--
-			substr = ""
-		} else {
-			substr = fmt.Sprint(substr + string(s[i]))
-		}
-		//Important this is added here, because this needs to be calculated even when no repetition occurs
-		if result < len(substr) {
-			result = len(substr)
+			for k := 0; k < len(substr); k++ {
+				if s[j] == substr[k] {
+					repeated = true
+				}
+			}
+			if !repeated {
+				substr = fmt.Sprint(substr + string(s[j]))
+				fmt.Println(substr)
+				//if the next index is not the same
+				if result < len(substr) {
+					result = len(substr)
+				}
+			} else {
+				break
+			}
 		}
 	}
 	return result
