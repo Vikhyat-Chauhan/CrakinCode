@@ -1,5 +1,6 @@
 /*
- * https://leetcode.com/problems/two-sum
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/solutions/4239419/go-solution-great-explanation-and-full-description/
  */
 package main
 
@@ -7,10 +8,11 @@ import (
 	"fmt"
 )
 
-var str = string("abcabcbb")
+var str = string("pwwkew")
 
 func main() {
 	fmt.Println(bruteForce(str))
+	fmt.Println(slidingWindowBased(str))
 }
 
 // Time O(n^3)
@@ -30,44 +32,44 @@ func bruteForce(s string) (result int) {
 			}
 			if !repeated {
 				substr = fmt.Sprint(substr + string(s[j]))
-				fmt.Println(substr)
-				//if the next index is not the same
-				if result < len(substr) {
-					result = len(substr)
-				}
+				//fmt.Println(substr)
 			} else {
 				break
 			}
+		}
+		//This is outside instead of being inside because the above loop will always leave with max possible substring
+		if result < len(substr) {
+			result = len(substr)
 		}
 	}
 	return result
 }
 
 // Time O(n)
-/*func hashMapBased(s string) (result int) {
-	seenit := make(map[byte]byte)
-	substr := ""
-	for i := 0; i < len(s); i++ {
-		found := false
-		if value, present := seenit[s[i]]; present {
-			found = true
-		} else {
-
-		}
-		for j := 0; j < len(substr); j++ {
-			if s[j] == s[i] {
-				found = true
+func slidingWindowBased(s string) (result int) {
+	//Creating a lookup map with key as char and value as last index found at
+	store := make(map[uint8]int)
+	var left, right int
+	//Continue till we reach the last index
+	for right < len(s) {
+		//lets check new value in map
+		r := s[right]
+		//if present in map means we its repeating
+		if index, present := store[r]; present {
+			//move the left to the next of the repeated element using its last index in map
+			if left <= index {
+				left = index + 1
 			}
 		}
-		if found {
-			if result < len(substr) {
-				result = len(substr)
-			}
-			i--
-			substr = ""
-		} else {
-			substr = fmt.Sprint(substr + string(s[i]))
+		//store the latest location of element at right
+		store[r] = right
+		//keep checking in every loop if len between left and right pointer has increased
+		if result < (right - left + 1) {
+			result = (right - left) + 1
+			fmt.Println(s[left : right+1])
 		}
+		//increase right pointer for the next iteration
+		right++
 	}
 	return result
-}*/
+}
