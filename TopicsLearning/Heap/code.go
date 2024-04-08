@@ -50,7 +50,7 @@ func heapify(index int, maxindex int) {
 	// Making sure the node actually exists and then comparing subsequent values to note if rightchild is bigger than previous bigger parent or left
 	if (rightindex <= maxindex) && (nums[rightindex] > nums[largest]) {
 		largest = rightindex
-	}
+	}else
 	// Only doing swap operation once we are sure either left or right is bigger than parent node .i.e largest index is not parent
 	if largest != index {
 		swap := nums[largest]
